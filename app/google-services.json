@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "420559517066",
+    "firebase_url": "https://pianoapp-8077a-default-rtdb.firebaseio.com",
+    "project_id": "pianoapp-8077a",
+    "storage_bucket": "pianoapp-8077a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420559517066:android:172d27bbbc2569c0864473",
+        "android_client_info": {
+          "package_name": "com.dude.pianoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420559517066-7aceaglmvk9esomf6hjupf9b6ea6k32u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdOKFjpp0keEPrCX9JXt_b6HYGUVhaeb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420559517066-7aceaglmvk9esomf6hjupf9b6ea6k32u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:420559517066:android:2382004946b8bf03864473",
+        "android_client_info": {
+          "package_name": "com.example.pianoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "420559517066-7aceaglmvk9esomf6hjupf9b6ea6k32u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdOKFjpp0keEPrCX9JXt_b6HYGUVhaeb8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "420559517066-7aceaglmvk9esomf6hjupf9b6ea6k32u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
