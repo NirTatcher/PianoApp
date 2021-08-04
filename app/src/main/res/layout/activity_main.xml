@@ -674,21 +674,30 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/btnProfile"
-                android:layout_width="150dp"
-                android:layout_height="70dp"
-                android:text="My profile"/>
+                android:layout_width="78dp"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:text="My profile" />
+
+            <Button
+                android:id="@+id/btnProfile2"
+                android:layout_width="83dp"
+                android:layout_height="wrap_content"
+                android:baselineAligned="false"
+                android:onClick="moveToDrums"
+                android:text="My profile2" />
 
         </LinearLayout>
-
         <Button
             android:id="@+id/bt_play_recording"
             android:layout_width="wrap_content"
             android:layout_height="80dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:onClick="play"
+            android:onClick="playFromFirebase"
             android:layout_marginEnd="111dp"
             android:background="@drawable/play_button" />
 

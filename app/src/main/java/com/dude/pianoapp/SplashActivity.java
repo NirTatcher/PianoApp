@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SplashActivity extends AppCompatActivity {
 
     // here first we need to decalare some variables
@@ -23,7 +25,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
     private static final int REQUEST_PERMISSION_SETTING = 101; // Request permission settings code
-
+    private FirebaseAuth mAuth;
     // Then I am creating a array of the name permissionsRequired
     // And i am filling it with the permissions that i want
 
@@ -156,6 +158,16 @@ public class SplashActivity extends AppCompatActivity {
      *
      * */
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        if(mAuth!=null){
+            startActivity(new Intent(SplashActivity.this,MainActivity.class));
+        }
+        else
+            startActivity(new Intent(SplashActivity.this,LoginActivity.class));
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

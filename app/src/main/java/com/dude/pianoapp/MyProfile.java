@@ -1,6 +1,8 @@
 package com.dude.pianoapp;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -27,5 +29,9 @@ public class MyProfile extends AppCompatActivity {
         txtEmail.setText(currentUser.getEmail().toString());
 
 
+    }
+
+    public void goToPlaying(View view){
+        startActivity(new Intent(MyProfile.this,PLayingActivity.class));
     }
 }

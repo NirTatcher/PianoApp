@@ -1,15 +1,25 @@
 package com.dude.pianoapp;
-
+import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.IOException;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
+import static com.dude.pianoapp.MainActivity.fileName;
 import static com.dude.pianoapp.MainActivity.mFileName1;
 import static com.dude.pianoapp.MainActivity.mFileName2;
 import static com.dude.pianoapp.MainActivity.mFileName3;
@@ -21,7 +31,8 @@ public class PLayingActivity extends AppCompatActivity {
 
     private MediaPlayer mPlayer;
     private Button record1,record2,record3,record4,record5,record6;
-
+    private StorageReference mStorageRef;
+    private MediaPlayer mediaPlayer;
 
     // boolean variables
 
@@ -50,6 +61,8 @@ public class PLayingActivity extends AppCompatActivity {
         record5 = (Button) findViewById(R.id.button5);
         record6 = (Button) findViewById(R.id.button6);
 
+
+        mStorageRef = FirebaseStorage.getInstance().getReference();
 
         record1.setBackgroundResource(R.drawable.playsongshape);
         record2.setBackgroundResource(R.drawable.playsongshape);
@@ -109,6 +122,51 @@ public class PLayingActivity extends AppCompatActivity {
 
         }
 
+    }
+
+
+    public void playFromFirebase(View view){
+        StorageReference storageRef = mStorageRef.child("sound/"+fileName);
+
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                MediaPlayer mediaPlayer = new MediaPlayer();
+
+                try {
+                    mediaPlayer.setDataSource(uri.toString());
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mp.start();
+                            record1.setText("Playing Recording From Firebase");
+
+                        }
+                    });
+
+                    mediaPlayer.prepare();
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                            record1.setText("FINISHED");
+                        }
+                    });
+//            mediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 
     public void play2(View view){
@@ -324,6 +382,7 @@ public class PLayingActivity extends AppCompatActivity {
             switch (recordingno){
 
                 case 1:
+                    // Create a reference with an initial file path and name
                     mPlayer.setDataSource(mFileName1);
                     break;
                 case 2:
@@ -365,6 +424,8 @@ public class PLayingActivity extends AppCompatActivity {
         mPlayer = null;
 
     }
+
+
 
     @Override
     protected void onPause() {

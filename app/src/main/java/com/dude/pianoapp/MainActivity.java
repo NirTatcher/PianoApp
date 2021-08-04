@@ -2,10 +2,13 @@ package com.dude.pianoapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.SoundPool;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -13,8 +16,16 @@ import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.File;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -24,8 +35,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     /// The code for the recording of the audio of Piano Keys
 
-
+    private StorageReference mStorageRef;
     private MediaRecorder mediaRecorder;
+    private MediaPlayer mediaPlayer;
     public static String mFileName1 = null;
     public static String mFileName2 = null;
     public static String mFileName3 = null;
@@ -34,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public static String mFileName6 = null;
 
 
-
+    public static String fileName = null;
+    String file = null;
     boolean mStartRecording = true;
 
 
@@ -196,14 +209,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView tb7;
 
     private Button btnProfile;
-
+    private Button btnProfile2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        fileName = "recordedaudio.3gp";
+        file = getExternalCacheDir().getAbsolutePath()+File.separator+fileName;
+        mStorageRef = FirebaseStorage.getInstance().getReference();
         // Intilize the scrool view
         scrollView = findViewById(R.id.scrollView);
 
@@ -559,7 +573,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnProfile  = (Button) findViewById(R.id.btnProfile);
         btnProfile.setOnClickListener(this);
-
+        btnProfile2  = (Button) findViewById(R.id.btnProfile);
+        btnProfile2.setOnClickListener(this);
 
     }
 
@@ -568,7 +583,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         switch (v.getId()){
-
+            case R.id.btnProfile2:
+                startActivity(new Intent(MainActivity.this,DrumsActivity.class));
+                break;
             case R.id.btnProfile:
                 startActivity(new Intent(MainActivity.this,MyProfile.class));
                 break;
@@ -897,13 +914,115 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     public void record(View view) {
-        onRecord(mStartRecording);
+//        onRecord(mStartRecording);
         if (mStartRecording) {
-            recordbutton.setText("Finish");
+
+            startRecord2();
+
         }else {
-            recordbutton.setText("Record");
+           stopRecord2();
+           uploadRecord2();
+//           play2();
         }
         mStartRecording = !mStartRecording;
+
+
+
+    }
+
+    private void uploadRecord2() {
+        Uri fileUri = Uri.fromFile(new File(file));
+        StorageReference fileRef = mStorageRef.child("sound/"+fileName);
+
+        fileRef.putFile(fileUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
+    }
+
+    public void playFromFirebase(View view){
+        StorageReference storageRef = mStorageRef.child("sound/"+fileName);
+
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                MediaPlayer mediaPlayer = new MediaPlayer();
+
+                try {
+                    mediaPlayer.setDataSource(uri.toString());
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mp.start();
+
+                        }
+                    });
+                    mediaPlayer.prepare();
+//            mediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                recordbutton.setText("Playing Recording From Firebase");
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+
+    }
+
+    public void play2(View view) {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+
+        try {
+            mediaPlayer.setDataSource(file);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        recordbutton.setText("Playing Recording");
+    }
+
+    private void stopRecord2() {
+           mediaRecorder.stop();
+           mediaRecorder.release();
+
+        recordbutton.setText("Record2");
+    }
+
+    private void startRecord2() {
+        mediaRecorder = new MediaRecorder();
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mediaRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        mediaRecorder.setOutputFile(file);
+
+        try {
+            mediaRecorder.prepare();
+            mediaRecorder.start();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        recordbutton.setText("Finish2");
+
     }
 
     /*
@@ -920,7 +1039,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
             case 1:
-                mediaRecorder.setOutputFile(mFileName1);
+
+                StorageReference riversRef = mStorageRef.child("sound/rivers111.3gp");
+
+//                mediaRecorder.setOutputFile("mStorageRef.child(sound/rivers111.3gp)");
+                mediaRecorder.setOutputFile( getExternalCacheDir().getAbsolutePath()+"SMK");
+                mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
                 recordingno++;
                 if (recordingno == 7)
                     recordingno = 1;
@@ -961,7 +1085,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         editor.putInt("fileno", recordingno);
         editor.commit();
         // mediaRecorder.setOutputFile(mFileName);
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
 
         try {
             mediaRecorder.prepare();
@@ -977,8 +1101,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaRecorder.stop();
         mediaRecorder.release();
         mediaRecorder = null;
+
+
+
+
     }
 
+    private void uploadRecording() {
+        Uri file = Uri.fromFile(new File(mFileName1));
+        StorageReference riversRef = mStorageRef.child("sound/rivers111.3gp");
+
+        riversRef.putFile(file)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
+    }
 
 
     private void onRecord(boolean start) {
@@ -997,7 +1145,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         "Song " + temprecordingno + " Saved", Toast.LENGTH_LONG);
                 recordingmsg.show();
             }
+            uploadRecording();
         }
     }
 
+    public void moveToDrums(View view) {
+        startActivity(new Intent(MainActivity.this,DrumsActivity.class));
+    }
+
+    public void goToPlaying(View view) {
+        startActivity(new Intent(MainActivity.this,PLayingActivity.class));
+
+    }
 }
