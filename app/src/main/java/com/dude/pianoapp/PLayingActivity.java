@@ -5,20 +5,32 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.dude.pianoapp.MainActivity.fileName;
 import static com.dude.pianoapp.MainActivity.mFileName1;
 import static com.dude.pianoapp.MainActivity.mFileName2;
@@ -33,6 +45,11 @@ public class PLayingActivity extends AppCompatActivity {
     private Button record1,record2,record3,record4,record5,record6;
     private StorageReference mStorageRef;
     private MediaPlayer mediaPlayer;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
+    private ListView record_list;
+    private ArrayList<String> arr_list_record;
+
 
     // boolean variables
 
@@ -53,23 +70,30 @@ public class PLayingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playing);
-
-        record1 = (Button) findViewById(R.id.button);
-        record2 = (Button) findViewById(R.id.button2);
-        record3 = (Button) findViewById(R.id.button3);
-        record4 = (Button) findViewById(R.id.button4);
-        record5 = (Button) findViewById(R.id.button5);
-        record6 = (Button) findViewById(R.id.button6);
-
-
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        record_list = findViewById(R.id.lsit_view);
+        arr_list_record = new ArrayList<Record>();
+//        GetRecordings();
 
-        record1.setBackgroundResource(R.drawable.playsongshape);
-        record2.setBackgroundResource(R.drawable.playsongshape);
-        record3.setBackgroundResource(R.drawable.playsongshape);
-        record4.setBackgroundResource(R.drawable.playsongshape);
-        record5.setBackgroundResource(R.drawable.playsongshape);
-        record6.setBackgroundResource(R.drawable.playsongshape);
+        //RecordListAdapter recordListAdapter = new RecordListAdapter(this,R.layout.adapter_view);
+
+
+//        record1 = (Button) findViewById(R.id.button);
+//        record2 = (Button) findViewById(R.id.button2);
+//        record3 = (Button) findViewById(R.id.button3);
+//        record4 = (Button) findViewById(R.id.button4);
+//        record5 = (Button) findViewById(R.id.button5);
+//        record6 = (Button) findViewById(R.id.button6);
+
+
+//        record1.setBackgroundResource(R.drawable.playsongshape);
+//        record2.setBackgroundResource(R.drawable.playsongshape);
+//        record3.setBackgroundResource(R.drawable.playsongshape);
+//        record4.setBackgroundResource(R.drawable.playsongshape);
+//        record5.setBackgroundResource(R.drawable.playsongshape);
+//        record6.setBackgroundResource(R.drawable.playsongshape);
 
         isplaying = false;
 
@@ -158,8 +182,6 @@ public class PLayingActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -168,6 +190,34 @@ public class PLayingActivity extends AppCompatActivity {
             }
         });
     }
+
+//    public void GetRecordings(View view){
+//
+//
+//            StorageReference listRef = mStorageRef.child(mAuth.getCurrentUser().getUid().toString()+"/");
+//
+//            listRef.listAll()
+//                    .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+//                        @Override
+//                        public void onSuccess(ListResult listResult) {
+//                            for (StorageReference prefix : listResult.getPrefixes()) {
+//                                Log.e("TAG", "onSuccess: "+prefix );
+//                            }
+//
+//                            for (StorageReference item : listResult.getItems()) {
+//                                arr_list_record.add(new Record(item.getName(),item.getPath()));
+//                            }
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Toast.makeText(PLayingActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+//                        }
+//
+//                    });
+//
+//    }
 
     public void play2(View view){
 
@@ -445,5 +495,45 @@ public class PLayingActivity extends AppCompatActivity {
             mPlayer.release();
             mPlayer = null;
         }
+    }
+
+    public void Stam2(View view) {
+        final StorageReference listRef = mStorageRef.child("el76Wqbw6nZm9QYDD7W9d7ncvTm1");
+
+        final ArrayAdapter<Record> arrayAdapter = new ArrayAdapter<Record>
+                (this, android.R.layout.simple_list_item_1);
+        arrayAdapter.setNotifyOnChange(true);
+        record_list.setAdapter(arrayAdapter);
+
+
+        listRef.listAll()
+                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                    @Override
+                    public void onSuccess(ListResult listResult) {
+                        Log.e("", "smk");
+
+//                        for (StorageReference prefix : listResult.getPrefixes()) {
+//                            // All the prefixes under listRef.
+//                            // You may call listAll() recursively on them.
+//                            Log.e("", prefix.getName());
+//                        }
+
+                        for (StorageReference item : listResult.getItems()) {
+                            // All the items under listRef.
+
+                            Log.e("", item.getName());
+
+                            arrayAdapter.add(item.getPath());
+                        }
+
+                        Log.e("",arr_list_record.toString());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Uh-oh, an error occurred!
+                    }
+                });
     }
 }

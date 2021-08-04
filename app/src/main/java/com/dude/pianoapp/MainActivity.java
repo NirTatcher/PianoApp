@@ -21,12 +21,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Array;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -36,8 +45,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     /// The code for the recording of the audio of Piano Keys
 
     private StorageReference mStorageRef;
+    private FirebaseAuth mAuth;
     private MediaRecorder mediaRecorder;
     private MediaPlayer mediaPlayer;
+    private Record[] records;
+    private  int count;
     public static String mFileName1 = null;
     public static String mFileName2 = null;
     public static String mFileName3 = null;
@@ -210,12 +222,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button btnProfile;
     private Button btnProfile2;
+    private ArrayList<Record> arr_list_record;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        fileName = "recordedaudio.3gp";
+        mAuth =  FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        arr_list_record = new ArrayList<Record>();
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+        fileName = "AUD"+ts.toString()+".3gp";
         file = getExternalCacheDir().getAbsolutePath()+File.separator+fileName;
         mStorageRef = FirebaseStorage.getInstance().getReference();
         // Intilize the scrool view
@@ -331,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // Initialize the Record button,Play Button and navigation button
 
         left_navigation = (Button) findViewById(R.id.bt_left_navigation);
-        right_navigation = (Button) findViewById(R.id.bt_right_navigation);
+//        right_navigation = (Button) findViewById(R.id.bt_right_navigation);
         recordbutton = (Button) findViewById(R.id.bt_record);
         playbutton = (Button) findViewById(R.id.bt_play_recording);
 
@@ -345,13 +363,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        right_navigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                scrollView.scrollTo((int) scrollView.getScrollX() + 30, (int) scrollView.getScrollY());
-            }
-        });
+//        right_navigation.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                scrollView.scrollTo((int) scrollView.getScrollX() + 30, (int) scrollView.getScrollY());
+//            }
+//        });
 
     }
 
@@ -932,7 +950,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void uploadRecord2() {
         Uri fileUri = Uri.fromFile(new File(file));
-        StorageReference fileRef = mStorageRef.child("sound/"+fileName);
+
+        Long tsLong = System.currentTimeMillis()/1000;
+        String ts = tsLong.toString();
+        fileName = "AUD"+ts.toString()+".3gp";
+
+        StorageReference fileRef = mStorageRef.child(mAuth.getCurrentUser().getUid()+"/"+fileName);
 
         fileRef.putFile(fileUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -1102,9 +1125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mediaRecorder.release();
         mediaRecorder = null;
 
-
-
-
     }
 
     private void uploadRecording() {
@@ -1157,4 +1177,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(new Intent(MainActivity.this,PLayingActivity.class));
 
     }
+    public void GetRecordings2(View view){
+        StorageReference listRef = mStorageRef.child(mAuth.getCurrentUser().getUid()+"/");
+
+        final String[] path = new String[1];
+        final String[] file_name = new String[1];
+        records = new Record[50];
+        count = 0;
+
+
+        listRef.listAll()
+                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                    @Override
+                    public void onSuccess(ListResult listResult) {
+                        for (StorageReference prefix : listResult.getPrefixes()) {
+                            Log.e("prefix", "onSuccess: "+prefix );
+                        }
+
+                        for (StorageReference item : listResult.getItems()) {
+                            records[count] = new Record(item.getName(),item.getPath());
+                            Log.e("item p", "onSuccess: "+records[count].getPath() );
+                            Log.e("item name", "onSuccess: "+records[count].getFileName() );
+                            count++;
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Uh-oh, an error occurred!
+                    }
+                });
+
+//        for (Record rec: records){
+//            if (rec!=null)
+//                arr_list_record.add(rec);
+//            else
+//                break;
+//        }
+        Log.e("TAG", "GetRecordings2: "+arr_list_record.size() );
+
+    }
+
 }

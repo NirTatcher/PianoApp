@@ -708,7 +708,8 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="-102dp"
             android:layout_toEndOf="@+id/bt_play_recording"
-            android:background="@drawable/right_navigation_button" />
+            android:background="@drawable/right_navigation_button"
+            android:onClick="GetRecordings2"/>
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
