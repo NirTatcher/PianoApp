@@ -73,8 +73,8 @@ public class PLayingActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         mStorageRef = FirebaseStorage.getInstance().getReference();
-        record_list = findViewById(R.id.lsit_view);
-        arr_list_record = new ArrayList<Record>();
+        record_list = findViewById(R.id.list_view);
+        arr_list_record = new ArrayList<String>();
 //        GetRecordings();
 
         //RecordListAdapter recordListAdapter = new RecordListAdapter(this,R.layout.adapter_view);
@@ -176,6 +176,47 @@ public class PLayingActivity extends AppCompatActivity {
                             mediaPlayer.stop();
                             mediaPlayer.release();
                             record1.setText("FINISHED");
+                        }
+                    });
+//            mediaPlayer.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
+    }
+
+    public void playFromFirebaseADP(String path){
+        StorageReference storageRef = mStorageRef.child(path);
+
+        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                // Got the download URL for 'users/me/profile.png'
+                MediaPlayer mediaPlayer = new MediaPlayer();
+
+                try {
+                    mediaPlayer.setDataSource(uri.toString());
+                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        @Override
+                        public void onPrepared(MediaPlayer mp) {
+                            mp.start();
+                            //record1.setText("Playing Recording From Firebase");
+                        }
+                    });
+
+                    mediaPlayer.prepare();
+                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            mediaPlayer.stop();
+                            mediaPlayer.release();
+                            //record1.setText("FINISHED");
                         }
                     });
 //            mediaPlayer.start();
@@ -500,9 +541,10 @@ public class PLayingActivity extends AppCompatActivity {
     public void Stam2(View view) {
         final StorageReference listRef = mStorageRef.child("el76Wqbw6nZm9QYDD7W9d7ncvTm1");
 
-        final ArrayAdapter<Record> arrayAdapter = new ArrayAdapter<Record>
-                (this, android.R.layout.simple_list_item_1);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+                (this, R.layout.adapter_view);
         arrayAdapter.setNotifyOnChange(true);
+
         record_list.setAdapter(arrayAdapter);
 
 
@@ -522,8 +564,8 @@ public class PLayingActivity extends AppCompatActivity {
                             // All the items under listRef.
 
                             Log.e("", item.getName());
-
-                            arrayAdapter.add(item.getPath());
+                            arr_list_record.add(item.getPath());
+                            //arrayAdapter.add(item.getPath());
                         }
 
                         Log.e("",arr_list_record.toString());
@@ -535,5 +577,7 @@ public class PLayingActivity extends AppCompatActivity {
                         // Uh-oh, an error occurred!
                     }
                 });
+        RecordListAdapter adapter = new RecordListAdapter(this,R.layout.adapter_view,arr_list_record);
+        record_list.setAdapter(adapter);
     }
 }
