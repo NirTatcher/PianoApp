@@ -66,24 +66,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         private void userLogin() {
-            mAuth.signInWithEmailAndPassword(userEmail.getText().toString(), userPass.getText().toString())
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                updateUI(user);
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Toast.makeText(getApplicationContext(), "Authentication failed.",
-                                        Toast.LENGTH_SHORT).show();
-                                updateUI(null);
+            String email_txt = userEmail.getText().toString();
+            String pass_txt = userPass.getText().toString();
+            if (email_txt.length() > 0 && pass_txt.length()>0){
+                mAuth.signInWithEmailAndPassword(email_txt, pass_txt)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    updateUI(user);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                    updateUI(null);
+                                }
                             }
-
-                            // ...
-                        }
-                    });
+                        });
+            }else{
+                Toast.makeText(this, "Please fill Email and password", Toast.LENGTH_LONG).show();
+            }
 
         }
 
@@ -96,7 +100,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(LoginActivity.this,RegisterActivity.class));
         }
 
+    @Override
+    public void onBackPressed() {
 
     }
+}
 
 

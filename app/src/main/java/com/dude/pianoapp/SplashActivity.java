@@ -162,7 +162,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mAuth = FirebaseAuth.getInstance();
-        if(mAuth!=null){
+        if(mAuth.getCurrentUser() != null){
             startActivity(new Intent(SplashActivity.this,MainActivity.class));
         }
         else

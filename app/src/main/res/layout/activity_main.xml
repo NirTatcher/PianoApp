@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:weightSum="2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#815555"
+    android:background="#ade8f4"
     android:gravity="top|center"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
@@ -12,16 +14,66 @@
     android:paddingTop="16dp"
     tools:context=".MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="10"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="16dp">
+
+        <Button
+            android:id="@+id/bt_record"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="record" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="7"
+            />
+
+
+        <Button
+            android:id="@+id/btnProfile"
+            android:layout_width="78dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/user_profile_icon_foreground"
+            android:gravity="bottom"
+            android:text="profile"
+            android:textSize="12dp"
+            android:baselineAligned="true" />
+        <Button
+            android:id="@+id/Records"
+            android:layout_width="78dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:baselineAligned="true"
+            android:background="@drawable/music_liv_icon_foreground"
+            />
+
+
+    </LinearLayout>
     <HorizontalScrollView
+        android:layout_gravity="center"
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true">
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+
+        >
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+
+            >
 
             <Button
                 android:id="@+id/p1"
@@ -31,7 +83,8 @@
                 android:id="@+id/p2"
                 style="@style/common_key_style_for_rest_of_the_piano_keys"
                 android:layout_marginLeft="2dp"
-                android:layout_toRightOf="@id/p1" />
+                android:layout_toRightOf="@id/p1"
+                />
 
             <Button
                 android:id="@+id/p3"
@@ -397,6 +450,7 @@
                 android:layout_toLeftOf="@id/p6"
                 android:stateListAnimator="@null"
                 android:text="G3"
+
                 android:textIsSelectable="false" />
 
             <TextView
@@ -649,70 +703,12 @@
 
             </LinearLayout>
 
-            <Button
-                android:id="@+id/btnProfile2"
-                android:layout_width="83dp"
-                android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:onClick="moveToDrums"
-                android:text="My profile2" />
+
+
+
+
+
         </RelativeLayout>
     </HorizontalScrollView>
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="16dp">
-
-
-<!--        <Button-->
-<!--            android:id="@+id/bt_left_navigation"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="80dp"-->
-<!--            android:layout_alignParentStart="true"-->
-<!--            android:layout_alignParentTop="true"-->
-<!--            android:layout_marginStart="10dp"-->
-<!--            android:background="@drawable/left_navigation_button" />-->
-
-        <Button
-            android:id="@+id/bt_record"
-            android:layout_width="wrap_content"
-            android:layout_height="80dp"
-            android:layout_alignParentStart="false"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="112dp"
-            android:background="@drawable/record_button"
-            android:onClick="record" />
-        <Button
-            android:id="@+id/btnProfile"
-            android:layout_width="78dp"
-            android:layout_height="wrap_content"
-            android:baselineAligned="false"
-            android:text="My profile" />
-
-
-        <!--        <Button-->
-        <!--            android:id="@+id/bt_play_recording"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="80dp"-->
-        <!--            android:layout_alignParentEnd="true"-->
-        <!--            android:layout_alignParentTop="true"-->
-        <!--            android:onClick="playFromFirebase"-->
-        <!--            android:layout_marginEnd="111dp"-->
-        <!--            android:background="@drawable/play_button" />-->
-
-        <!--        <Button-->
-        <!--            android:id="@+id/bt_right_navigation"-->
-        <!--            android:layout_width="wrap_content"-->
-        <!--            android:layout_height="80dp"-->
-        <!--            android:layout_alignParentTop="true"-->
-        <!--            android:layout_marginStart="-102dp"-->
-        <!--            android:layout_toEndOf="@+id/bt_play_recording"-->
-        <!--            android:background="@drawable/right_navigation_button"-->
-        <!--            android:onClick="GetRecordings2"/>-->
-    </RelativeLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

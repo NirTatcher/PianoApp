@@ -600,9 +600,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
 
         switch (v.getId()){
-            case R.id.btnProfile2:
-                startActivity(new Intent(MainActivity.this,DrumsActivity.class));
-                break;
+//            case R.id.btnProfile2:
+//                startActivity(new Intent(MainActivity.this,DrumsActivity.class));
+//                break;
             case R.id.btnProfile:
                 startActivity(new Intent(MainActivity.this,MyProfile.class));
                 break;

@@ -14,11 +14,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnSignup;
-    EditText userEmail,userPass,userRePass;
+    EditText name,userEmail,userPass,userRePass;
     private FirebaseAuth mAuth;
+    private FirebaseUser;
+    private Rea
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +38,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     private void initViews() {
         btnSignup=findViewById(R.id.btnSignup);
+
+        name = findViewById(R.id.txtInpt_name);
         userEmail=findViewById(R.id.userEmail);
         userPass=findViewById(R.id.userPass);
         userRePass=findViewById(R.id.userRePass);
@@ -49,9 +54,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void userSignup() {
-        String email=userEmail.getText().toString();
-        String pass=userPass.getText().toString();
-        String repass=userRePass.getText().toString();
+        String txt_name  = name.getText().toString();
+        String email = userEmail.getText().toString();
+        String pass = userPass.getText().toString();
+        String repass = userRePass.getText().toString();
 
         if(pass.equals(repass)) {
             mAuth.createUserWithEmailAndPassword(email, pass)
@@ -60,6 +66,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
+                                FirebaseUser u = mAuth.getCurrentUser();
+
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             } else {
                                 // If sign in fails, display a message to the user.

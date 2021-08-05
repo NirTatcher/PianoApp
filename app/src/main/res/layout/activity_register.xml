@@ -35,14 +35,16 @@
             android:weightSum="10">
 
             <EditText
-                android:id="@+id/txtUserName"
+                android:id="@+id/txtInpt_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:background="#5Cffffff"
                 android:gravity="center"
-                android:hint="@string/insert_email"
-                android:textColorHint="#FFFFFF" />
+                android:hint="Enter your name"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -55,8 +57,10 @@
                 android:layout_weight="1"
                 android:background="#5Cffffff"
                 android:gravity="center"
+                android:inputType="text"
+
                 android:hint="@string/insert_email"
-                android:textColorHint="#FFFFFF" />
+                android:textColorHint="@color/black"/>
 
             <Space
                 android:layout_width="match_parent"
@@ -71,7 +75,7 @@
                 android:background="#5Cffffff"
                 android:gravity="center"
                 android:hint="@string/insert_password"
-                android:textColorHint="#FFFFFF"
+                android:textColorHint="@color/black"
                 android:inputType="textPassword"/>
             <Space
                 android:layout_width="match_parent"
@@ -85,8 +89,8 @@
                 android:layout_weight="1"
                 android:background="#5Cffffff"
                 android:gravity="center"
-                android:hint="@string/insert_repassword"
-                android:textColorHint="#FFFFFF"
+                android:hint="ReEnter Password"
+                android:textColorHint="@color/black"
                 android:inputType="textPassword"/>
 
             <Space
