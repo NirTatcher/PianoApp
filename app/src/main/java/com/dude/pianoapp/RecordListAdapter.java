@@ -45,6 +45,7 @@ public class RecordListAdapter extends ArrayAdapter<String> {
         this.mContext = context;
         mResurce = resource;
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        finished = true;
 
 
     }
@@ -55,8 +56,8 @@ public class RecordListAdapter extends ArrayAdapter<String> {
         final String path;
 
         path = getItem(position);
-        finished = false;
 
+        finished = true;
         String [] str = path.split("/");
         String [] disp_name = str[str.length-1].split(".3gp");
         SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
@@ -74,6 +75,7 @@ public class RecordListAdapter extends ArrayAdapter<String> {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 InitPlayer(path,v);
             }
         });
@@ -164,4 +166,5 @@ public class RecordListAdapter extends ArrayAdapter<String> {
         else if (finished)
             playFromFirebaseADP(path,v);
     }
+
 }
