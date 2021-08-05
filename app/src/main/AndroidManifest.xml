@@ -15,11 +15,14 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <activity android:name=".DrumsActivity"></activity>
-        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RegisterActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".LoginActivity"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".MyProfile" />
+        <activity android:name=".MyProfile"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"

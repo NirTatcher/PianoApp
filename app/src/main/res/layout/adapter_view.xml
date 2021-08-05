@@ -10,16 +10,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="PLAY"
-        tools:layout_editor_absoluteX="2dp"
-        tools:layout_editor_absoluteY="3dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="2dp" />
 
     <TextView
         android:id="@+id/rec_name"
-        android:layout_width="299dp"
-        android:layout_height="36dp"
+        android:layout_width="147dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="20dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/play_rec_btn"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/play_rec_btn"
+        app:layout_constraintTop_toTopOf="@+id/play_rec_btn"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <Button
+        android:id="@+id/del_rec_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DELete"
+        android:gravity="center|bottom"
+        android:background="@drawable/outline_delete_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/rec_name"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

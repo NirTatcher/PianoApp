@@ -15,13 +15,16 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
     Button btnSignup;
     EditText name,userEmail,userPass,userRePass;
     private FirebaseAuth mAuth;
-    private FirebaseUser;
-    private Rea
+    private FirebaseUser user2Register;
+    private FirebaseDatabase database;
+    private DatabaseReference myRef ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         userEmail=findViewById(R.id.userEmail);
         userPass=findViewById(R.id.userPass);
         userRePass=findViewById(R.id.userRePass);
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("users");
+
 
     }
 
@@ -59,14 +65,33 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String pass = userPass.getText().toString();
         String repass = userRePass.getText().toString();
 
-        if(pass.equals(repass)) {
+        if (email.length() == 0){
+            Toast.makeText(this, "Please Fill Email", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        if( pass.length() > 3 && pass.equals(repass)) {
             mAuth.createUserWithEmailAndPassword(email, pass)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
+
                                 FirebaseUser u = mAuth.getCurrentUser();
+                                if (u != null){
+                                    if (txt_name.length() > 0)
+                                    {
+                                        myRef.child(u.getUid()).setValue(txt_name);
+                                    }
+                                    else {
+                                        myRef.child(u.getUid()).setValue("Beethoven");
+                                    }
+                                }else
+                                {
+                                    Toast.makeText(RegisterActivity.this, "User is null", Toast.LENGTH_LONG).show();
+                                }
 
                                 startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
                             } else {
@@ -78,7 +103,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         }
                     });
         }else{
-            Toast.makeText(getApplicationContext(), "Password not match!",
+            Toast.makeText(getApplicationContext(), "Password not match OR to Short",
                     Toast.LENGTH_SHORT).show();
         }
     }

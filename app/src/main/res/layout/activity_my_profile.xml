@@ -22,19 +22,20 @@
             android:background="@drawable/circle_border">
 
             <ImageView
+
                 android:layout_width="120dp"
                 android:layout_height="120dp"
                 android:layout_margin="9dp"
                 android:adjustViewBounds="true"
-                android:background="@drawable/circle"
                 android:padding="3dp"
                 android:scaleType="centerInside"
-                android:src="@drawable/avi" />
+
+                />
 
         </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_name"
+            android:id="@+id/textView_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgUser"
@@ -44,17 +45,9 @@
             android:text="Avi Izhak"
             android:textColor="@color/white"
             android:textSize="32sp" />
-        
 
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_settings" />
+
+
 
     </RelativeLayout>
 
@@ -65,34 +58,7 @@
         android:layout_below="@id/rellay1"
         android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="#CAC9C9"
-            android:gravity="center"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Edit Profile"
-                    android:textColor="@color/black"
-                    android:textSize="20sp" />
-
-
-            </LinearLayout>
-
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -115,7 +81,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="SignOut!"
+                    android:text="SignOut"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     />
@@ -173,63 +139,36 @@
 
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="15dp"-->
+<!--                android:orientation="vertical">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Phone"
-                    android:textColor="@color/headings"
-                    android:textSize="13sp" />
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Name"-->
+<!--                    android:textColor="@color/headings"-->
+<!--                    android:textSize="13sp" />-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="050-123456"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textView_name"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:fontFamily="sans-serif-light"-->
+<!--                    android:text="050-123456"-->
+<!--                    android:textColor="#000000"-->
+<!--                    android:textSize="18sp" />-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:layout_marginTop="15dp"-->
+<!--                    android:background="@color/grey" />-->
 
-            </LinearLayout>
+<!--            </LinearLayout>-->
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Twitter"
-                    android:textColor="@color/headings"
-                    android:textSize="13sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-light"
-                    android:text="Avi12"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/grey" />
-
-            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -240,15 +179,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Facebook"
+                    android:text=" Compositions"
                     android:textColor="@color/headings"
                     android:textSize="13sp" />
 
                 <TextView
+                    android:id="@+id/textView_comps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:text="facebook.com/avi_izhak"
+                    android:text="6"
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
@@ -263,16 +203,7 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/playing_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="156dp"
-            android:layout_marginTop="0dp"
-            android:onClick="goToPlaying"
-            android:text="GO TO PLAYING" />
+
 
     </RelativeLayout>
 
