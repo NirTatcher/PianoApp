@@ -106,47 +106,13 @@ public class PLayingActivity extends AppCompatActivity {
 
     }
 
-
-
-    public void play1(View view){
-
-        if (!isplaying1&&!isplaying){
-            record1.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying = true;
-            isplaying1 = true;
-
-        }else if(!isplaying1&&!isplaying){
-            stopPlaying();
-
-            record1.setBackgroundResource(R.drawable.playsongshape);
-            record2.setBackgroundResource(R.drawable.playsongshape);
-            record3.setBackgroundResource(R.drawable.playsongshape);
-            record4.setBackgroundResource(R.drawable.playsongshape);
-            record5.setBackgroundResource(R.drawable.playsongshape);
-            record6.setBackgroundResource(R.drawable.playsongshape);
-
-            isplaying1 = false;
-            isplaying2 = false;
-            isplaying3 = false;
-            isplaying4 = false;
-            isplaying5 = false;
-            isplaying6 = false;
-
-            record1.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying1 = true;
-
-        }else {
-
-            record1.setBackgroundResource(R.drawable.playsongshape);
-            stopPlaying();
-            isplaying1 = false;
-            isplaying = false;
-
-        }
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Stam2();
     }
+
+
 
 
     public void playFromFirebase(View view){
@@ -232,236 +198,6 @@ public class PLayingActivity extends AppCompatActivity {
         });
     }
 
-//    public void GetRecordings(View view){
-//
-//
-//            StorageReference listRef = mStorageRef.child(mAuth.getCurrentUser().getUid().toString()+"/");
-//
-//            listRef.listAll()
-//                    .addOnSuccessListener(new OnSuccessListener<ListResult>() {
-//                        @Override
-//                        public void onSuccess(ListResult listResult) {
-//                            for (StorageReference prefix : listResult.getPrefixes()) {
-//                                Log.e("TAG", "onSuccess: "+prefix );
-//                            }
-//
-//                            for (StorageReference item : listResult.getItems()) {
-//                                arr_list_record.add(new Record(item.getName(),item.getPath()));
-//                            }
-//                        }
-//                    })
-//                    .addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Toast.makeText(PLayingActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-//                        }
-//
-//                    });
-//
-//    }
-
-    public void play2(View view){
-
-        if (!isplaying2&&!isplaying){
-            record2.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying = true;
-            isplaying2 = true;
-
-        }else if(!isplaying2&&!isplaying){
-            stopPlaying();
-
-            record1.setBackgroundResource(R.drawable.playsongshape);
-            record2.setBackgroundResource(R.drawable.playsongshape);
-            record3.setBackgroundResource(R.drawable.playsongshape);
-            record4.setBackgroundResource(R.drawable.playsongshape);
-            record5.setBackgroundResource(R.drawable.playsongshape);
-            record6.setBackgroundResource(R.drawable.playsongshape);
-
-            isplaying1 = false;
-            isplaying2 = false;
-            isplaying3 = false;
-            isplaying4 = false;
-            isplaying5 = false;
-            isplaying6 = false;
-
-            record2.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying2 = true;
-
-        }else {
-
-            record2.setBackgroundResource(R.drawable.playsongshape);
-            stopPlaying();
-            isplaying2 = false;
-            isplaying = false;
-
-        }
-
-    }
-
-    public void play3(View view){
-
-        if (!isplaying3&&!isplaying){
-            record3.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying = true;
-            isplaying3 = true;
-
-        }else if(!isplaying3&&!isplaying){
-            stopPlaying();
-
-            record1.setBackgroundResource(R.drawable.playsongshape);
-            record2.setBackgroundResource(R.drawable.playsongshape);
-            record3.setBackgroundResource(R.drawable.playsongshape);
-            record4.setBackgroundResource(R.drawable.playsongshape);
-            record5.setBackgroundResource(R.drawable.playsongshape);
-            record6.setBackgroundResource(R.drawable.playsongshape);
-
-            isplaying1 = false;
-            isplaying2 = false;
-            isplaying3 = false;
-            isplaying4 = false;
-            isplaying5 = false;
-            isplaying6 = false;
-
-            record3.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying3 = true;
-
-        }else {
-
-            record3.setBackgroundResource(R.drawable.playsongshape);
-            stopPlaying();
-            isplaying3 = false;
-            isplaying = false;
-
-        }
-
-    }
-
-
-    public void play4(View view){
-
-        if (!isplaying4&&!isplaying){
-            record4.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying = true;
-            isplaying4 = true;
-
-        }else if(!isplaying4&&!isplaying){
-            stopPlaying();
-
-            record1.setBackgroundResource(R.drawable.playsongshape);
-            record2.setBackgroundResource(R.drawable.playsongshape);
-            record3.setBackgroundResource(R.drawable.playsongshape);
-            record4.setBackgroundResource(R.drawable.playsongshape);
-            record5.setBackgroundResource(R.drawable.playsongshape);
-            record6.setBackgroundResource(R.drawable.playsongshape);
-
-            isplaying1 = false;
-            isplaying2 = false;
-            isplaying3 = false;
-            isplaying4 = false;
-            isplaying5 = false;
-            isplaying6 = false;
-
-            record4.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying4 = true;
-
-        }else {
-
-            record4.setBackgroundResource(R.drawable.playsongshape);
-            stopPlaying();
-            isplaying4 = false;
-            isplaying = false;
-
-        }
-
-    }
-
-    public void play5(View view){
-
-        if (!isplaying5&&!isplaying){
-            record5.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying = true;
-            isplaying5 = true;
-
-        }else if(!isplaying5&&!isplaying){
-            stopPlaying();
-
-            record1.setBackgroundResource(R.drawable.playsongshape);
-            record2.setBackgroundResource(R.drawable.playsongshape);
-            record3.setBackgroundResource(R.drawable.playsongshape);
-            record4.setBackgroundResource(R.drawable.playsongshape);
-            record5.setBackgroundResource(R.drawable.playsongshape);
-            record6.setBackgroundResource(R.drawable.playsongshape);
-
-            isplaying1 = false;
-            isplaying2 = false;
-            isplaying3 = false;
-            isplaying4 = false;
-            isplaying5 = false;
-            isplaying6 = false;
-
-            record5.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying5 = true;
-
-        }else {
-
-            record5.setBackgroundResource(R.drawable.playsongshape);
-            stopPlaying();
-            isplaying5 = false;
-            isplaying = false;
-
-        }
-
-    }
-    public void play6(View view){
-
-        if (!isplaying6&&!isplaying){
-            record6.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying = true;
-            isplaying6 = true;
-
-        }else if(!isplaying6&&!isplaying){
-            stopPlaying();
-
-            record1.setBackgroundResource(R.drawable.playsongshape);
-            record2.setBackgroundResource(R.drawable.playsongshape);
-            record3.setBackgroundResource(R.drawable.playsongshape);
-            record4.setBackgroundResource(R.drawable.playsongshape);
-            record5.setBackgroundResource(R.drawable.playsongshape);
-            record6.setBackgroundResource(R.drawable.playsongshape);
-
-            isplaying1 = false;
-            isplaying2 = false;
-            isplaying3 = false;
-            isplaying4 = false;
-            isplaying5 = false;
-            isplaying6 = false;
-
-            record6.setBackgroundResource(R.drawable.playsongshapepressed);
-            startplaying(1);
-            isplaying6 = true;
-
-        }else {
-
-            record6.setBackgroundResource(R.drawable.playsongshape);
-            stopPlaying();
-            isplaying6 = false;
-            isplaying = false;
-
-        }
-
-    }
-
-
-
 
 
     private void startplaying(int recordingno) {
@@ -538,17 +274,19 @@ public class PLayingActivity extends AppCompatActivity {
         }
     }
 
-    public void Stam2(View view) {
-        final StorageReference listRef = mStorageRef.child("el76Wqbw6nZm9QYDD7W9d7ncvTm1");
-
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-                (this, R.layout.adapter_view);
-        arrayAdapter.setNotifyOnChange(true);
-
-        record_list.setAdapter(arrayAdapter);
+    public void Stam2() {
+        final StorageReference listRef = mStorageRef.child(currentUser.getUid());
 
 
-        listRef.listAll()
+//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
+//                (this, R.layout.adapter_view);
+//        arrayAdapter.setNotifyOnChange(true);
+//
+//        record_list.setAdapter(arrayAdapter);
+
+
+
+        Task task = listRef.listAll()
                 .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
                     public void onSuccess(ListResult listResult) {
@@ -577,7 +315,19 @@ public class PLayingActivity extends AppCompatActivity {
                         // Uh-oh, an error occurred!
                     }
                 });
-        RecordListAdapter adapter = new RecordListAdapter(this,R.layout.adapter_view,arr_list_record);
-        record_list.setAdapter(adapter);
+        task.addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                findViewById(R.id.loading_bar).setVisibility(View.GONE);
+                RecordListAdapter adapter = new RecordListAdapter(PLayingActivity.this,R.layout.adapter_view,arr_list_record);
+                record_list.setAdapter(adapter);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(PLayingActivity.this, "Unable to load recodings", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

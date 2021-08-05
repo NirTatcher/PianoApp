@@ -347,21 +347,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
         // Initialize the Record button,Play Button and navigation button
-
-        left_navigation = (Button) findViewById(R.id.bt_left_navigation);
+        //      left_navigation = (Button) findViewById(R.id.bt_left_navigation);
 //        right_navigation = (Button) findViewById(R.id.bt_right_navigation);
         recordbutton = (Button) findViewById(R.id.bt_record);
-        playbutton = (Button) findViewById(R.id.bt_play_recording);
+        //playbutton = (Button) findViewById(R.id.bt_play_recording);
 
 
 
-        left_navigation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                scrollView.scrollTo((int) scrollView.getScrollX() - 30, (int) scrollView.getScrollX());
-            }
-        });
+//        left_navigation.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                scrollView.scrollTo((int) scrollView.getScrollX() - 30, (int) scrollView.getScrollX());
+//            }
+//        });
 
 //        right_navigation.setOnClickListener(new View.OnClickListener() {
 //            @Override
