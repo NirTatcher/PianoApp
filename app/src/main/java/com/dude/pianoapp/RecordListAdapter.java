@@ -1,6 +1,7 @@
 package com.dude.pianoapp;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
@@ -25,7 +26,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -52,22 +55,42 @@ public class RecordListAdapter extends ArrayAdapter<String> {
 
         path = getItem(position);
 
+        String [] str = path.split("/");
+        String [] disp_name = str[str.length-1].split(".3gp");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss");
+        Long ts = Long.parseLong(disp_name[0]);
+        Date d = new Date(ts);
+        String time = dateFormat.format(d);
+
+
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         convertView = layoutInflater.inflate(mResurce,parent,false);
         TextView view = (TextView)convertView.findViewById(R.id.rec_name);
         final Button btn = (Button)convertView.findViewById(R.id.play_rec_btn);
+        final Button del_btn = (Button)convertView.findViewById(R.id.del_rec_btn);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                         playFromFirebaseADP(path ,v);
             }
         });
-        view.setText(path);
+
+        view.setText(time);
+
+        del_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mStorageRef.child(path).delete();
+                btn.setEnabled(false);
+            }
+        });
 
         return convertView;
     }
     public void playFromFirebaseADP(String path, final View v){
 
+        ((Button)v).setText("PAUSE");
         StorageReference storageRef = mStorageRef.child(path);
         storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
@@ -80,25 +103,21 @@ public class RecordListAdapter extends ArrayAdapter<String> {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mp.start();
-
-
-                            //record1.setText("Playing Recording From Firebase");
-                            ((Button)v).setText("FINISH");
                             ((Button)v).setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-
                                     if (mediaPlayer.isPlaying()) {
                                         Log.e("PAUSE", "onClick: PAUSE");
-                                        ((Button)v).setText("RESUME");
+                                        ((Button)v).setText("PLAY");
+                                        //((Button)v).setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
                                         mediaPlayer.pause();
 
                                     }else {
+                                        ((Button)v).setText("PAUSE");
+
+                                        //((Button)v).setBackgroundResource(R.drawable.ic_baseline_pause_24);
                                         mediaPlayer.start();
-                                        ((Button)v).setText("PAUSED");
-
                                     }
-
                                 }
                             });
                         }
@@ -109,9 +128,11 @@ public class RecordListAdapter extends ArrayAdapter<String> {
                     mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mediaPlayer) {
+
+                            ((Button)v).setText("PLAY");
+                            //((Button)v).setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
                             mediaPlayer.stop();
                             mediaPlayer.release();
-                            ((Button)v).setText("PLAY");
                         }
                     });
 //            mediaPlayer.start();

@@ -2,18 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/backkground"
+    android:background="@color/main_bckrnd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="20"
     android:orientation="vertical"
     tools:context=".RegisterActivity">>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="7"
-        android:src="@drawable/registerr" />
+    <TextView
+        android:text="Register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="80dp"
+        android:layout_margin="40dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/anton_reg"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -102,14 +106,11 @@
                 android:id="@+id/btnSignup"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:text="SignUp!"
                 app:backgroundTint="#148CEC" />
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
+
 
         </LinearLayout>
     </LinearLayout>

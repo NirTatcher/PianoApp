@@ -1,9 +1,8 @@
 <resources>
     <string name="app_name">PianoApp</string>
-    <string name="App_name">Piano App</string>
-    <string name="inseret_email">Inseret Email..</string>
+    <string name="App_name">PIANO APP</string>
     <string name="insert_email">InsertEmail</string>
-    <string name="insert_password">Insert Password..</string>
+    <string name="insert_password">Insert Password</string>
     <string name="insert_Repassword" />
     <string name="insert_repassword">Insert RePassword</string>
 </resources>

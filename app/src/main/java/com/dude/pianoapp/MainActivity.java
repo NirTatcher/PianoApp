@@ -33,9 +33,12 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Array;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -228,14 +231,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         mAuth =  FirebaseAuth.getInstance();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        arr_list_record = new ArrayList<Record>();
-        Long tsLong = System.currentTimeMillis()/1000;
-        String ts = tsLong.toString();
-        fileName = "AUD"+ts.toString()+".3gp";
-        file = getExternalCacheDir().getAbsolutePath()+File.separator+fileName;
         mStorageRef = FirebaseStorage.getInstance().getReference();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        arr_list_record = new ArrayList<Record>();
+
+//        Long tsLong = System.currentTimeMillis()/1000;
+//        String ts = tsLong.toString();
+        //fileName = "AUD"+ts.toString()+".3gp";
+
+        file = getExternalCacheDir().getAbsolutePath()+File.separator+fileName;
+
+
         // Intilize the scrool view
         scrollView = findViewById(R.id.scrollView);
 
@@ -342,33 +352,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         recordingno = prefs.getInt("fileno", 1);
 
 
-
-
-
-
-        // Initialize the Record button,Play Button and navigation button
-        //      left_navigation = (Button) findViewById(R.id.bt_left_navigation);
-//        right_navigation = (Button) findViewById(R.id.bt_right_navigation);
         recordbutton = (Button) findViewById(R.id.bt_record);
-        //playbutton = (Button) findViewById(R.id.bt_play_recording);
+        playbutton = (Button) findViewById(R.id.go_to_records);
 
+        playbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this,PLayingActivity.class));
+            }
+        });
 
-
-//        left_navigation.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                scrollView.scrollTo((int) scrollView.getScrollX() - 30, (int) scrollView.getScrollX());
-//            }
-//        });
-
-//        right_navigation.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                scrollView.scrollTo((int) scrollView.getScrollX() + 30, (int) scrollView.getScrollY());
-//            }
-//        });
 
     }
 
@@ -922,23 +915,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    public void play(View view) {
-
-        Intent intent = new Intent(MainActivity.this,PLayingActivity.class);
-        startActivity(intent);
-
-    }
 
 
     public void record(View view) {
-//        onRecord(mStartRecording);
+//
         if (mStartRecording) {
-
-            startRecord2();
-
+            startRecord();
         }else {
-           stopRecord2();
-           uploadRecord2();
+           stopRecord();
+           uploadRecord();
 //           play2();
         }
         mStartRecording = !mStartRecording;
@@ -947,12 +932,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void uploadRecord2() {
+    private void uploadRecord() {
         Uri fileUri = Uri.fromFile(new File(file));
 
-        Long tsLong = System.currentTimeMillis()/1000;
+        Long tsLong = System.currentTimeMillis();
         String ts = tsLong.toString();
-        fileName = "AUD"+ts.toString()+".3gp";
+
+        fileName = ts+".3gp";
 
         StorageReference fileRef = mStorageRef.child(mAuth.getCurrentUser().getUid()+"/"+fileName);
 
@@ -973,62 +959,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
     }
 
-    public void playFromFirebase(View view){
-        StorageReference storageRef = mStorageRef.child("sound/"+fileName);
 
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                MediaPlayer mediaPlayer = new MediaPlayer();
 
-                try {
-                    mediaPlayer.setDataSource(uri.toString());
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            mp.start();
-
-                        }
-                    });
-                    mediaPlayer.prepare();
-//            mediaPlayer.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                recordbutton.setText("Playing Recording From Firebase");
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-
-    }
-
-    public void play2(View view) {
-        MediaPlayer mediaPlayer = new MediaPlayer();
-
-        try {
-            mediaPlayer.setDataSource(file);
-            mediaPlayer.prepare();
-            mediaPlayer.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        recordbutton.setText("Playing Recording");
-    }
-
-    private void stopRecord2() {
+    private void stopRecord() {
            mediaRecorder.stop();
            mediaRecorder.release();
-
-        recordbutton.setText("Record2");
+           //recordbutton.setText("Record");
+            recordbutton.setBackgroundResource(R.drawable.ic_outline_fiber_manual_record_24);
     }
 
-    private void startRecord2() {
+
+    private void startRecord() {
         mediaRecorder = new MediaRecorder();
         mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
         mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -1043,179 +984,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
 
-        recordbutton.setText("Finish2");
+        recordbutton.setBackgroundResource(R.drawable.ic_baseline_fiber_manual_record_24);
 
     }
 
-    /*
-     *   The startRecording() method code :::
-     *
-     * */
-
-    private void startRecording() {
-
-        mediaRecorder = new MediaRecorder();
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        switch (recordingno) {
-
-
-            case 1:
-
-                StorageReference riversRef = mStorageRef.child("sound/rivers111.3gp");
-
-//                mediaRecorder.setOutputFile("mStorageRef.child(sound/rivers111.3gp)");
-                mediaRecorder.setOutputFile( getExternalCacheDir().getAbsolutePath()+"SMK");
-                mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-                recordingno++;
-                if (recordingno == 7)
-                    recordingno = 1;
-                break;
-            case 2:
-                mediaRecorder.setOutputFile(mFileName2);
-                recordingno++;
-                if (recordingno == 7)
-                    recordingno = 1;
-                break;
-            case 3:
-                mediaRecorder.setOutputFile(mFileName3);
-                recordingno++;
-                if (recordingno == 7)
-                    recordingno = 1;
-                break;
-            case 4:
-                mediaRecorder.setOutputFile(mFileName4);
-                recordingno++;
-                if (recordingno == 7)
-                    recordingno = 1;
-                break;
-            case 5:
-                mediaRecorder.setOutputFile(mFileName5);
-                recordingno++;
-                if (recordingno == 7)
-                    recordingno = 1;
-                break;
-            case 6:
-                mediaRecorder.setOutputFile(mFileName6);
-                recordingno++;
-                if (recordingno == 7)
-                    recordingno = 1;
-                break;
-        }
-
-        SharedPreferences.Editor editor = getSharedPreferences("FILENO", MODE_PRIVATE).edit();
-        editor.putInt("fileno", recordingno);
-        editor.commit();
-        // mediaRecorder.setOutputFile(mFileName);
-
-
-        try {
-            mediaRecorder.prepare();
-        } catch (IOException e) {
-            Log.e("prepare fail", "prepare() failed");
-        }
-        Log.d("recorder has started", "recorder has started");
-        mediaRecorder.start();
-    }
-
-
-    private void stopRecording() {
-        mediaRecorder.stop();
-        mediaRecorder.release();
-        mediaRecorder = null;
-
-    }
-
-    private void uploadRecording() {
-        Uri file = Uri.fromFile(new File(mFileName1));
-        StorageReference riversRef = mStorageRef.child("sound/rivers111.3gp");
-
-        riversRef.putFile(file)
-                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // Get a URL to the uploaded content
-//                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                        // ...
-                    }
-                });
-    }
-
-
-    private void onRecord(boolean start) {
-        if (start) {
-            startRecording();
-        } else {
-            stopRecording();
-            if (recordingno == 1) {
-                Toast recordingmsg = Toast.makeText(getApplicationContext(),
-                        "Song " + 6 + " saved", Toast.LENGTH_SHORT);
-
-                recordingmsg.show();
-            } else {
-                int temprecordingno = recordingno - 1;
-                Toast recordingmsg = Toast.makeText(getApplicationContext(),
-                        "Song " + temprecordingno + " Saved", Toast.LENGTH_LONG);
-                recordingmsg.show();
-            }
-            uploadRecording();
-        }
-    }
 
     public void moveToDrums(View view) {
         startActivity(new Intent(MainActivity.this,DrumsActivity.class));
     }
 
-    public void goToPlaying(View view) {
-        startActivity(new Intent(MainActivity.this,PLayingActivity.class));
-
-    }
-    public void GetRecordings2(View view){
-        StorageReference listRef = mStorageRef.child(mAuth.getCurrentUser().getUid()+"/");
-
-        final String[] path = new String[1];
-        final String[] file_name = new String[1];
-        records = new Record[50];
-        count = 0;
-
-
-        listRef.listAll()
-                .addOnSuccessListener(new OnSuccessListener<ListResult>() {
-                    @Override
-                    public void onSuccess(ListResult listResult) {
-                        for (StorageReference prefix : listResult.getPrefixes()) {
-                            Log.e("prefix", "onSuccess: "+prefix );
-                        }
-
-                        for (StorageReference item : listResult.getItems()) {
-                            records[count] = new Record(item.getName(),item.getPath());
-                            Log.e("item p", "onSuccess: "+records[count].getPath() );
-                            Log.e("item name", "onSuccess: "+records[count].getFileName() );
-                            count++;
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Uh-oh, an error occurred!
-                    }
-                });
-
-//        for (Record rec: records){
-//            if (rec!=null)
-//                arr_list_record.add(rec);
-//            else
-//                break;
-//        }
-        Log.e("TAG", "GetRecordings2: "+arr_list_record.size() );
-
-    }
 
 }

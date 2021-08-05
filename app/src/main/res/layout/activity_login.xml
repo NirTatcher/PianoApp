@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
 
-    android:background="@mipmap/piano_keys_tspt_foreground"
+    android:background="@color/main_bckrnd"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="20"
@@ -16,18 +16,19 @@
         android:layout_weight="1"/>
 
     <TextView
+        android:fontFamily="@font/anton_reg"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:text="@string/App_name"
-        android:textColor="#FFFFFF"
-        android:layout_weight="2"
-        android:textSize="30dp"
+        android:textColor="@color/black"
+        android:layout_weight="3"
+        android:textSize="50dp"
         android:gravity="center"/>
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"/>
+        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -90,7 +91,8 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:text="Login"
-                app:backgroundTint="#122DC3" />
+                app:backgroundTint="#148CEC"
+                />
 
             <Space
                 android:layout_width="match_parent"

@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".DrumsActivity"></activity>
+        <activity android:name=".DrumsActivity"
+            android:screenOrientation="portrait"
+
+            ></activity>
         <activity android:name=".RegisterActivity"
             android:screenOrientation="portrait"
             />

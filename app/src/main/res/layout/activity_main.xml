@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ade8f4"
+    android:background="@color/main_bckrnd"
     android:gravity="top|center"
     android:paddingBottom="16dp"
     android:paddingLeft="16dp"
@@ -28,11 +28,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@drawable/ic_outline_fiber_manual_record_24"
             android:onClick="record" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/nir_drum_icon"
+            android:onClick="moveToDrums"
+            />
         <Space
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="7"
+            android:layout_weight="6"
             />
 
 
@@ -42,16 +50,16 @@
             android:layout_height="40dp"
             android:layout_weight="1"
             android:gravity="bottom"
-            android:text="profile"
+            android:background="@drawable/ic_baseline_person_24"
             android:textSize="12dp"
             android:baselineAligned="true" />
         <Button
-            android:id="@+id/Records"
+            android:id="@+id/go_to_records"
             android:layout_width="78dp"
             android:layout_height="40dp"
             android:layout_weight="1"
             android:baselineAligned="true"
-            android:background="@drawable/music_liv_icon_foreground"
+            android:background="@drawable/ic_baseline_playlist_play_24"
             />
 
 

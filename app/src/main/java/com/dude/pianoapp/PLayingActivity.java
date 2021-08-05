@@ -1,5 +1,6 @@
 package com.dude.pianoapp;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class PLayingActivity extends AppCompatActivity {
     private FirebaseUser currentUser;
     private ListView record_list;
     private ArrayList<String> arr_list_record;
+    private SharedPreferences sp;
 
 
     // boolean variables
@@ -80,21 +82,6 @@ public class PLayingActivity extends AppCompatActivity {
         //RecordListAdapter recordListAdapter = new RecordListAdapter(this,R.layout.adapter_view);
 
 
-//        record1 = (Button) findViewById(R.id.button);
-//        record2 = (Button) findViewById(R.id.button2);
-//        record3 = (Button) findViewById(R.id.button3);
-//        record4 = (Button) findViewById(R.id.button4);
-//        record5 = (Button) findViewById(R.id.button5);
-//        record6 = (Button) findViewById(R.id.button6);
-
-
-//        record1.setBackgroundResource(R.drawable.playsongshape);
-//        record2.setBackgroundResource(R.drawable.playsongshape);
-//        record3.setBackgroundResource(R.drawable.playsongshape);
-//        record4.setBackgroundResource(R.drawable.playsongshape);
-//        record5.setBackgroundResource(R.drawable.playsongshape);
-//        record6.setBackgroundResource(R.drawable.playsongshape);
-
         isplaying = false;
 
         isplaying1 = false;
@@ -109,143 +96,11 @@ public class PLayingActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Stam2();
+        GetRecords();
     }
 
-
-
-
-    public void playFromFirebase(View view){
-        StorageReference storageRef = mStorageRef.child("sound/"+fileName);
-
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                MediaPlayer mediaPlayer = new MediaPlayer();
-
-                try {
-                    mediaPlayer.setDataSource(uri.toString());
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            mp.start();
-                            record1.setText("Playing Recording From Firebase");
-
-                        }
-                    });
-
-                    mediaPlayer.prepare();
-                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
-                            mediaPlayer.stop();
-                            mediaPlayer.release();
-                            record1.setText("FINISHED");
-                        }
-                    });
-//            mediaPlayer.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-    }
-
-    public void playFromFirebaseADP(String path){
-        StorageReference storageRef = mStorageRef.child(path);
-
-        storageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                // Got the download URL for 'users/me/profile.png'
-                MediaPlayer mediaPlayer = new MediaPlayer();
-
-                try {
-                    mediaPlayer.setDataSource(uri.toString());
-                    mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                        @Override
-                        public void onPrepared(MediaPlayer mp) {
-                            mp.start();
-                            //record1.setText("Playing Recording From Firebase");
-                        }
-                    });
-
-                    mediaPlayer.prepare();
-                    mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
-                            mediaPlayer.stop();
-                            mediaPlayer.release();
-                            //record1.setText("FINISHED");
-                        }
-                    });
-//            mediaPlayer.start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-    }
-
-
-
-    private void startplaying(int recordingno) {
-
-        mPlayer = new MediaPlayer();
-
-        try{
-
-            switch (recordingno){
-
-                case 1:
-                    // Create a reference with an initial file path and name
-                    mPlayer.setDataSource(mFileName1);
-                    break;
-                case 2:
-                    mPlayer.setDataSource(mFileName2);
-                    break;
-
-                case 3:
-                    mPlayer.setDataSource(mFileName3);
-                    break;
-
-                case 4:
-                    mPlayer.setDataSource(mFileName4);
-                    break;
-
-                case 5:
-                    mPlayer.setDataSource(mFileName5);
-                    break;
-                case 6:
-                    mPlayer.setDataSource(mFileName6);
-                    break;
-            }
-
-           mPlayer.prepare();
-           mPlayer.start();
-
-
-        }catch (IOException e){
-
-            Log.e("failed","Failes");
-        }
-
-
-    }
 
     private void stopPlaying(){
-
 
         mPlayer.release();
         mPlayer = null;
@@ -274,16 +129,8 @@ public class PLayingActivity extends AppCompatActivity {
         }
     }
 
-    public void Stam2() {
+    public void GetRecords() {
         final StorageReference listRef = mStorageRef.child(currentUser.getUid());
-
-
-//        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>
-//                (this, R.layout.adapter_view);
-//        arrayAdapter.setNotifyOnChange(true);
-//
-//        record_list.setAdapter(arrayAdapter);
-
 
 
         Task task = listRef.listAll()
@@ -300,7 +147,6 @@ public class PLayingActivity extends AppCompatActivity {
 
                         for (StorageReference item : listResult.getItems()) {
                             // All the items under listRef.
-
                             Log.e("", item.getName());
                             arr_list_record.add(item.getPath());
                             //arrayAdapter.add(item.getPath());
