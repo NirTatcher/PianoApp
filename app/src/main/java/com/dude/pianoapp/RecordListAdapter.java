@@ -35,6 +35,7 @@ import java.util.zip.Inflater;
 public class RecordListAdapter extends ArrayAdapter<String> {
     private StorageReference mStorageRef;
     private MediaPlayer mediaPlayer;
+    private Boolean finished;
 
     private  Context mContext;
     int mResurce;
@@ -54,6 +55,7 @@ public class RecordListAdapter extends ArrayAdapter<String> {
         final String path;
 
         path = getItem(position);
+        finished = false;
 
         String [] str = path.split("/");
         String [] disp_name = str[str.length-1].split(".3gp");
@@ -72,12 +74,10 @@ public class RecordListAdapter extends ArrayAdapter<String> {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        playFromFirebaseADP(path ,v);
+                InitPlayer(path,v);
             }
         });
-
         view.setText(time);
-
         del_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -89,6 +89,10 @@ public class RecordListAdapter extends ArrayAdapter<String> {
         return convertView;
     }
     public void playFromFirebaseADP(String path, final View v){
+
+//        if (playing)
+//            return;
+//
 
         ((Button)v).setText("PAUSE");
         StorageReference storageRef = mStorageRef.child(path);
@@ -103,25 +107,27 @@ public class RecordListAdapter extends ArrayAdapter<String> {
                         @Override
                         public void onPrepared(MediaPlayer mp) {
                             mp.start();
-                            ((Button)v).setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    if (mediaPlayer.isPlaying()) {
-                                        Log.e("PAUSE", "onClick: PAUSE");
-                                        ((Button)v).setText("PLAY");
-                                        //((Button)v).setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
-                                        mediaPlayer.pause();
-
-                                    }else {
-                                        ((Button)v).setText("PAUSE");
-
-                                        //((Button)v).setBackgroundResource(R.drawable.ic_baseline_pause_24);
-                                        mediaPlayer.start();
-                                    }
-                                }
-                            });
+                            finished = false;
+//                            ((Button)v).setOnClickListener(new View.OnClickListener() {
+//                                @Override
+//                                public void onClick(View v) {
+//                                    if (mediaPlayer.isPlaying()) {
+//                                        Log.e("PAUSE", "onClick: PAUSE");
+//                                        ((Button)v).setText("PLAY");
+//                                        //((Button)v).setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
+//                                        mediaPlayer.pause();
+//
+//                                    }else {
+//                                        ((Button)v).setText("PAUSE");
+//
+//                                        //((Button)v).setBackgroundResource(R.drawable.ic_baseline_pause_24);
+//                                        mediaPlayer.start();
+//                                    }
+//                                }
+//                            });
                         }
                     });
+
 
 
                     mediaPlayer.prepare();
@@ -133,6 +139,8 @@ public class RecordListAdapter extends ArrayAdapter<String> {
                             //((Button)v).setBackgroundResource(R.drawable.ic_baseline_play_arrow_24);
                             mediaPlayer.stop();
                             mediaPlayer.release();
+                            mediaPlayer = null;
+                            finished = true;
                         }
                     });
 //            mediaPlayer.start();
@@ -146,5 +154,14 @@ public class RecordListAdapter extends ArrayAdapter<String> {
                 // Handle any errors
             }
         });
+    }
+
+    public void InitPlayer(String path,View v){
+        if (mediaPlayer!=null && mediaPlayer.isPlaying())
+            mediaPlayer.pause();
+        else if (!finished && mediaPlayer!=null)
+            mediaPlayer.start();
+        else if (finished)
+            playFromFirebaseADP(path,v);
     }
 }

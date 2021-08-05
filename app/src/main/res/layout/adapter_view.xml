@@ -15,11 +15,12 @@
         />
 
     <TextView
+        android:layoutDirection="rtl"
         android:id="@+id/rec_name"
         android:layout_width="250dp"
         android:layout_height="0dp"
-        android:layout_marginStart="10dp"
         android:text="TextView"
+        android:layout_marginRight="20dp"
         app:layout_constraintBottom_toBottomOf="@+id/play_rec_btn"
         app:layout_constraintStart_toEndOf="@+id/play_rec_btn"
         app:layout_constraintTop_toTopOf="@+id/play_rec_btn"
